@@ -11,8 +11,6 @@ class Book:
         self.name= name
         self.price= price
         self.stock= stock
-        cursor.execute("create database if not exists books")
-        cursor.execute("use abutalha")
         cursor.execute("create table if not exists book(name varchar(20), price int, stock int)")
         cursor.execute(f"insert into book value('{self.name}', {self.price}, {self.stock})")
         
@@ -22,7 +20,9 @@ class Book:
         
 @app.route('/')
 def home():
-   return render_template("home.html")
+    cursor.execute("create database if not exists book")
+    cursor.execute("use abutalha")
+    return render_template("home.html")
 
 @app.route('/add', methods=["POST"])
 def addbook():
@@ -37,6 +37,12 @@ def addbook():
 @app.route('/bookadd')
 def bookadd():
     return render_template("addbook.html") 
+
+@app.route('/info')
+def info():
+    cursor.execute("select * from book")
+    book = cursor.fetchall()
+    return render_template('info.html', returnbooks = book )
     
 if __name__ == "__main__":
     app.run(debug = True)

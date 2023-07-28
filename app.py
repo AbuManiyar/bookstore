@@ -1,8 +1,7 @@
 from flask import Flask, render_template, request
 import mysql.connector as conn
-db = conn.connect(host = 'localhost', user= 'root', password = '')
+db = conn.connect(host = 'localhost', user= 'root', password = '@123')
 cursor = db.cursor()
-
 app = Flask(__name__)
 
 
@@ -11,8 +10,7 @@ class Book:
         self.name= name
         self.price= price
         self.stock= stock
-        cursor.execute("create table if not exists book(name varchar(20), price int, stock int)")
-        cursor.execute(f"insert into book value('{self.name}', {self.price}, {self.stock})")
+        cursor.execute(f"insert into book1 value('{self.name}', {self.price}, {self.stock})")
         
         
     def update(self,presentstock):
@@ -20,8 +18,9 @@ class Book:
         
 @app.route('/')
 def home():
-    cursor.execute("create database if not exists book")
-    cursor.execute("use abutalha")
+    cursor.execute("create database if not exists books")
+    cursor.execute("use books")
+    cursor.execute("create table if not exists book1(name varchar(200), price int, stock int)")
     return render_template("home.html")
 
 @app.route('/add', methods=["POST"])
@@ -32,7 +31,7 @@ def addbook():
     book = Book(name,price,stock)
     
     #print(cursor.fetchall())
-    return "Book Added"
+    return "<h1>Book Added</h1>"
 
 @app.route('/bookadd')
 def bookadd():
@@ -40,9 +39,9 @@ def bookadd():
 
 @app.route('/info')
 def info():
-    cursor.execute("select * from book")
+    cursor.execute("select * from book1")
     book = cursor.fetchall()
     return render_template('info.html', returnbooks = book )
     
 if __name__ == "__main__":
-    app.run(debug = True)
+    app.run()

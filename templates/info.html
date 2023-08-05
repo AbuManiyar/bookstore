@@ -10,8 +10,7 @@
     <div>
     <h1>Book Store!</h1>
   </div>
-  <div>
-  </div>
+  {% if numbooks %}
   <div>
     <table class="table">
         <thead>
@@ -20,6 +19,9 @@
             <th scope="col">Name</th>
             <th scope="col">Price</th>
             <th scope="col">Stock</th>
+            <th scope="col">Sell</th>
+            <th scope="col">Delete</th>
+
           </tr>
         </thead>
         <tbody>
@@ -29,12 +31,22 @@
             <td>{{i[0]}}</td>
             <td>{{i[1]}}</td>
             <td>{{i[2]}}</td>
+            <td> <a type="submit" class="btn btn-success" href="sell/{{i[0]}}/{{i[2]}}">Sell One</a></td>
+            <td> <a type="submit" class="btn btn-danger" href="delete/{{i[0]}}">Delete</a></td>
           </tr>
       {% endfor %}
          
         </tbody>
       </table>
   </div>
+  {% else %}
+  <h3>No Books to Display</h3>
+  <p>Add your first book by clicking the link below</p>
+  <a type="submit" class="btn btn-primary" href="add">Add Book</a>
+  {%endif%}
+  {% if numbooks   %}
+  <p>Total number of books = {{numberofbooks[0][0]}}</p>
+  {% endif %}
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
   </body>
 </html>
